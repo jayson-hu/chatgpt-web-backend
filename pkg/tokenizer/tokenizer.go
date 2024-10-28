@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/sashabaranov/go-openai"
 )
@@ -16,7 +17,11 @@ type tokenInfo struct {
 }
 
 func GetTokenCount(message openai.ChatCompletionMessage, model string) (int, error) {
-	url := fmt.Sprintf("http://127.0.0.1:5000/tokenizer/%s", model)
+	tokenizerHostInfo := os.Getenv("tokenizer_host")
+	if tokenizerHostInfo == "" {
+		tokenizerHostInfo = "127.0.0.1:5000"
+	}
+	url := fmt.Sprintf("http://%s/tokenizer/%s", tokenizerHostInfo, model)
 	info := tokenInfo{}
 	if err := postJSON(url, &message, &info); err != nil {
 		return 0, err

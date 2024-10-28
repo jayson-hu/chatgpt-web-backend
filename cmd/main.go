@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"os"
-	"os/exec"
 	"path"
 	"strings"
 	"time"
@@ -55,7 +53,7 @@ func (r *ChatGPTWebServer) Run(cmd *cobra.Command, args []string) error {
 	if err := r.updateAssetsFiles(r.OpsLink); err != nil {
 		return err
 	}
-	go r.startTokenizer(cmd.Context())
+	//go r.startTokenizer(cmd.Context())
 	go r.httpServer(cmd.Context())
 
 	<-cmd.Context().Done()
@@ -164,6 +162,7 @@ func (r *ChatGPTWebServer) httpServer(ctx context.Context) {
 	}
 }
 
+/*
 func (r *ChatGPTWebServer) startTokenizer(ctx context.Context) {
 	args := strings.Split("nuxt --module tokenizer.py --workers 2", " ")
 	klog.Infof("Start Tokenizer with %v", args)
@@ -175,6 +174,7 @@ func (r *ChatGPTWebServer) startTokenizer(ctx context.Context) {
 		os.Exit(1)
 	}
 }
+*/
 
 func (r *ChatGPTWebServer) updateAssetsFiles(link string) error {
 	pairs := map[string]string{}
